@@ -1,14 +1,22 @@
 package users;
 
 public class Student extends User{
-    int studentNumber;
+    //variables
+    private int studentNumber;
 
+    //constructor
+    public Student(int num, String nameIn, String idIn, String pwIn){
+        super(nameIn,idIn,pwIn);
+        studentNumber = num;
+    }
+
+
+    //method
     void courseRegister(){
 
     }
     void dropACourse(){
 
     }
-
 
 }
