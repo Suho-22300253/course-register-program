@@ -22,42 +22,6 @@ public class Program {
         studentManager = stumanage;
     }
 
-    public void start() {
-        systemManager.loadAccounts();
-        professorManager.loadCourses();
-
-        boolean run = true;
-
-        while (run) {
-            printMainMenu();
-            int option = keyboard.nextInt();
-            keyboard.nextLine();
-
-            switch (option) {
-                case 1:
-                    createAccountMenu();
-                    break;
-                case 2:
-                    loginMenu();
-                    break;
-                case 3:
-                    exitProgram();
-                    run = false;
-                    break;
-                default:
-                    System.out.println("Wrong menu number.");
-            }
-        }
-    }
-
-    private void printMainMenu() {
-        System.out.println("\n===== Course Register Program =====");
-        System.out.println("1. Create Account");
-        System.out.println("2. Login");
-        System.out.println("3. Exit");
-        System.out.print("Select menu: ");
-    }
-
     public void createAccountMenu() {
         System.out.println("\n===== Create Account =====");
         System.out.println("1. Student");

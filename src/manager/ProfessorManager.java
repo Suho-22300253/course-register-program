@@ -11,21 +11,25 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ProfessorManager {
-    private ArrayList<Course> courses;
+    private ArrayList<Course> courses = new ArrayList<>();;
     private SystemManager systemManager;
 
     private static final String COURSE_FILE = "courses.txt";
 
     public ProfessorManager(SystemManager systemManager) {
         this.systemManager = systemManager;
-        this.courses = new ArrayList<>();
     }
 
     public void loadCourses() {
         File file = new File(COURSE_FILE);
 
         if (!file.exists()) {
-            System.out.println("No course file. Start with empty course list.");
+            try {
+                file.createNewFile();
+                System.out.println("courses.txt file created.");
+            } catch (Exception e) {
+                System.out.println("Error creating courses file.");
+            }
             return;
         }
 
@@ -43,27 +47,28 @@ public class ProfessorManager {
 
                 String[] arr = line.split("\\|");
 
-                if (arr.length != 4) {
+                if (arr.length != 3) {
                     continue;
                 }
 
                 String courseName = arr[0];
                 int credit = Integer.parseInt(arr[1]);
                 String professorName = arr[2];
-                String professorId = arr[3];
 
-                Course course = new Course(courseName, credit, professorName, professorId);
+                Course course = new Course(courseName, credit, professorName);
                 courses.add(course);
+
+                createCourseFile(course);
             }
 
             System.out.println("Course data loaded.");
 
         } catch (FileNotFoundException e) {
             System.out.println("Error opening courses file.");
-        } finally {
-            if (inputStream != null) {
-                inputStream.close();
-            }
+        }
+
+        if (inputStream != null) {
+            inputStream.close();
         }
     }
 
@@ -75,22 +80,16 @@ public class ProfessorManager {
 
             for (int i = 0; i < courses.size(); i++) {
                 Course course = courses.get(i);
-                outputStream.println(
-                        course.getCourseName() + "|" +
-                                course.getCredit() + "|" +
-                                course.getProfessorName() + "|" +
-                                course.getProfessorId()
-                );
+                outputStream.println(course.getCourseName() + "|" +course.getCredit() + "|" +course.getProfessorName());
             }
 
             System.out.println("Course data saved.");
 
         } catch (FileNotFoundException e) {
             System.out.println("Error saving courses file.");
-        } finally {
-            if (outputStream != null) {
-                outputStream.close();
-            }
+        }
+        if (outputStream != null) {
+            outputStream.close();
         }
     }
 
@@ -107,8 +106,7 @@ public class ProfessorManager {
             return;
         }
 
-        Course course = new Course(courseName, credit, currentUser.getName(), currentUser.getId());
-
+        Course course = new Course(courseName, credit, currentUser.getName());
         courses.add(course);
         saveCourses();
         createCourseFile(course);
@@ -119,35 +117,28 @@ public class ProfessorManager {
     public void showMyCourses() {
         User currentUser = systemManager.getCurrentUser();
 
-        if (!(currentUser instanceof Professor)) {
-            System.out.println("Only professor can check course list.");
-            return;
-        }
-
-        boolean found = false;
+        int count = 0;
 
         for (int i = 0; i < courses.size(); i++) {
             Course course = courses.get(i);
 
-            if (course.getProfessorId().equals(currentUser.getId())) {
+            if (course.getProfessorName().equals(currentUser.getName())) {
                 System.out.println(course);
-                found = true;
+                count++;
             }
         }
 
-        if (!found) {
-            System.out.println("No course found.");
-        }
+        System.out.println("Total: " + count +" courses");
     }
 
     public void showAllCourses() {
         if (courses.isEmpty()) {
-            System.out.println("No course found.");
+            System.out.println("There are currently no courses registered.");
             return;
         }
 
         for (int i = 0; i < courses.size(); i++) {
-            System.out.println(courses.get(i));
+            System.out.println(courses.get(i).toString());
         }
     }
 
@@ -179,19 +170,11 @@ public class ProfessorManager {
 
         try {
             outputStream = new PrintWriter(fileName);
-
-            outputStream.println("COURSE_NAME|" + course.getCourseName());
-            outputStream.println("CREDIT|" + course.getCredit());
-            outputStream.println("PROFESSOR_NAME|" + course.getProfessorName());
-            outputStream.println("PROFESSOR_ID|" + course.getProfessorId());
-            outputStream.println("STUDENTS");
-
         } catch (FileNotFoundException e) {
             System.out.println("Error creating course file.");
-        } finally {
-            if (outputStream != null) {
-                outputStream.close();
-            }
+        }
+        if (outputStream != null) {
+            outputStream.close();
         }
     }
 

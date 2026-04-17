@@ -108,6 +108,10 @@ public class SystemManager implements ISystemManager {
             System.out.println("This id already exists.");
             return;
         }
+        if(isDuplicatedNumber(studentNumber)){
+            System.out.println("This studnet number is already exists.");
+            return;
+        }
 
         Student student = new Student(studentNumber, name, id, password);
         students.add(student);
@@ -119,6 +123,10 @@ public class SystemManager implements ISystemManager {
     public void createProfessorAccount(String name, String id, String password, int professorNumber) {
         if (isDuplicatedId(id)) {
             System.out.println("This id already exists.");
+            return;
+        }
+        if(isDuplicatedNumber(professorNumber)){
+            System.out.println("This professor number is already exists.");
             return;
         }
 
@@ -175,6 +183,24 @@ public class SystemManager implements ISystemManager {
         for (int i = 0; i < professors.size(); i++) {
             Professor professor = professors.get(i);
             if (professor.getId().equals(id)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isDuplicatedNumber(int number) {
+        for (int i = 0; i < students.size(); i++) {
+            Student student = students.get(i);
+            if (student.getStudentNumber() == number) {
+                return true;
+            }
+        }
+
+        for (int i = 0; i < professors.size(); i++) {
+            Professor professor = professors.get(i);
+            if (professor.getProfessorNumber() == number) {
                 return true;
             }
         }

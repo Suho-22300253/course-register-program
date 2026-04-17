@@ -34,20 +34,21 @@ public class StudentManager {
             return;
         }
 
-        ArrayList<String> studentIds = readStudentIds(course.getCourseName());
+        int studentNumber = ((Student) currentUser).getStudentNumber();
+        ArrayList<Integer> studentNumbers = readStudentNumbers(course.getCourseName());
 
-        if (studentIds == null) {
-            System.out.println("Course detail file not found.");
+        if (studentNumbers == null) {
+            System.out.println("The course has not been opened.");
             return;
         }
 
-        if (studentIds.contains(currentUser.getId())) {
+        if (studentNumbers.contains(studentNumber)) {
             System.out.println("You already registered this course.");
             return;
         }
 
-        studentIds.add(currentUser.getId());
-        writeCourseFile(course, studentIds);
+        studentNumbers.add(studentNumber);
+        writeCourseFile(course, studentNumbers);
 
         System.out.println("Course registered successfully.");
     }
@@ -67,20 +68,21 @@ public class StudentManager {
             return;
         }
 
-        ArrayList<String> studentIds = readStudentIds(course.getCourseName());
+        int studentNumber = ((Student) currentUser).getStudentNumber();
+        ArrayList<Integer> studentNumbers = readStudentNumbers(course.getCourseName());
 
-        if (studentIds == null) {
+        if (studentNumbers == null) {
             System.out.println("Course detail file not found.");
             return;
         }
 
-        if (!studentIds.contains(currentUser.getId())) {
+        if (!studentNumbers.contains(studentNumber)) {
             System.out.println("You are not registered in this course.");
             return;
         }
 
-        studentIds.remove(currentUser.getId());
-        writeCourseFile(course, studentIds);
+        studentNumbers.remove(Integer.valueOf(studentNumber));
+        writeCourseFile(course, studentNumbers);
 
         System.out.println("Course dropped successfully.");
     }
@@ -93,21 +95,20 @@ public class StudentManager {
             return;
         }
 
+        int studentNumber = ((Student) currentUser).getStudentNumber();
         ArrayList<Course> courses = professorManager.getCourses();
-        boolean found = false;
+        int count = 0;
 
         for (int i = 0; i < courses.size(); i++) {
             Course course = courses.get(i);
 
-            if (isStudentRegistered(course.getCourseName(), currentUser.getId())) {
+            if (isStudentRegistered(course.getCourseName(), studentNumber)) {
                 System.out.println(course);
-                found = true;
+                count++;
             }
         }
 
-        if (!found) {
-            System.out.println("No registered course.");
-        }
+        System.out.println("Total: " + count +" courses");
     }
 
     public void checkCredits() {
@@ -118,13 +119,14 @@ public class StudentManager {
             return;
         }
 
+        int studentNumber = ((Student) currentUser).getStudentNumber();
         ArrayList<Course> courses = professorManager.getCourses();
         int totalCredits = 0;
 
         for (int i = 0; i < courses.size(); i++) {
             Course course = courses.get(i);
 
-            if (isStudentRegistered(course.getCourseName(), currentUser.getId())) {
+            if (isStudentRegistered(course.getCourseName(), studentNumber)) {
                 totalCredits += course.getCredit();
             }
         }
@@ -132,7 +134,7 @@ public class StudentManager {
         System.out.println("Total registered credits: " + totalCredits);
     }
 
-    private ArrayList<String> readStudentIds(String courseName) {
+    private ArrayList<Integer> readStudentNumbers(String courseName) {
         String fileName = courseName + ".txt";
         File file = new File(fileName);
 
@@ -140,70 +142,42 @@ public class StudentManager {
             return null;
         }
 
-        ArrayList<String> studentIds = new ArrayList<>();
-        Scanner inputStream = null;
+        ArrayList<Integer> studentNumbers = new ArrayList<>();
 
-        try {
-            inputStream = new Scanner(file);
-            boolean studentPart = false;
-
+        try (Scanner inputStream = new Scanner(file)) {
             while (inputStream.hasNextLine()) {
-                String line = inputStream.nextLine();
+                String line = inputStream.nextLine().trim();
 
-                if (line.equals("STUDENTS")) {
-                    studentPart = true;
-                    continue;
-                }
-
-                if (studentPart && !line.trim().isEmpty()) {
-                    studentIds.add(line);
+                if (!line.isEmpty()) {
+                    studentNumbers.add(Integer.parseInt(line));
                 }
             }
-
         } catch (FileNotFoundException e) {
             return null;
-        } finally {
-            if (inputStream != null) {
-                inputStream.close();
-            }
         }
 
-        return studentIds;
+        return studentNumbers;
     }
 
-    private void writeCourseFile(Course course, ArrayList<String> studentIds) {
+    private void writeCourseFile(Course course, ArrayList<Integer> studentNumbers) {
         String fileName = course.getCourseName() + ".txt";
-        PrintWriter outputStream = null;
 
-        try {
-            outputStream = new PrintWriter(fileName);
-
-            outputStream.println("COURSE_NAME|" + course.getCourseName());
-            outputStream.println("CREDIT|" + course.getCredit());
-            outputStream.println("PROFESSOR_NAME|" + course.getProfessorName());
-            outputStream.println("PROFESSOR_ID|" + course.getProfessorId());
-            outputStream.println("STUDENTS");
-
-            for (int i = 0; i < studentIds.size(); i++) {
-                outputStream.println(studentIds.get(i));
+        try (PrintWriter outputStream = new PrintWriter(fileName)) {
+            for (int i = 0; i < studentNumbers.size(); i++) {
+                outputStream.println(studentNumbers.get(i));
             }
-
         } catch (FileNotFoundException e) {
             System.out.println("Error writing course file.");
-        } finally {
-            if (outputStream != null) {
-                outputStream.close();
-            }
         }
     }
 
-    private boolean isStudentRegistered(String courseName, String studentId) {
-        ArrayList<String> studentIds = readStudentIds(courseName);
+    private boolean isStudentRegistered(String courseName, int studentNumber) {
+        ArrayList<Integer> studentNumbers = readStudentNumbers(courseName);
 
-        if (studentIds == null) {
+        if (studentNumbers == null) {
             return false;
         }
 
-        return studentIds.contains(studentId);
+        return studentNumbers.contains(studentNumber);
     }
 }
