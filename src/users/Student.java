@@ -12,17 +12,7 @@ public class Student extends User{
 
 
     //method
-    public void setStudentNumber(int studentNumber) {
-        this.studentNumber = studentNumber;
-    }
     public int getStudentNumber() {
         return studentNumber;
     }
-    void courseRegister(){
-
-    }
-    void dropACourse(){
-
-    }
-
 }

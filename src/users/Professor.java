@@ -7,19 +7,8 @@ public class Professor extends User {
         super(nameIn,idIn,pwIn);
         professorNumber = num;
     }
-    public void setProfessorNumber(int studentNumber) {
-        this.professorNumber = studentNumber;
-    }
     public int getProfessorNumber() {
         return professorNumber;
     }
-    void enterGrade(){
 
-    }
-    void addCourse(){
-
-    }
-    void modifyCourse(){
-
-    }
 }

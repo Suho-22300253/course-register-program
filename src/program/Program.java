@@ -1,7 +1,11 @@
 package program;
 
-import manager.*;
-import users.*;
+import manager.ProfessorManager;
+import manager.StudentManager;
+import manager.SystemManager;
+import users.Professor;
+import users.Student;
+import users.User;
 
 import java.util.Scanner;
 
@@ -11,18 +15,17 @@ public class Program {
     private ProfessorManager professorManager;
     private StudentManager studentManager;
 
-    public Program() {
-        keyboard = new Scanner(System.in);
-
-        systemManager = new SystemManager();
-        professorManager = new ProfessorManager(systemManager);
-        studentManager = new StudentManager(systemManager, professorManager);
-
-        systemManager.loadAccounts();
-        professorManager.loadCourses();
+    public Program(Scanner sc, SystemManager sysmanage, ProfessorManager pm, StudentManager stumanage) {
+        keyboard = sc;
+        systemManager = sysmanage;
+        professorManager = pm;
+        studentManager = stumanage;
     }
 
-    public void run() {
+    public void start() {
+        systemManager.loadAccounts();
+        professorManager.loadCourses();
+
         boolean run = true;
 
         while (run) {
@@ -38,9 +41,6 @@ public class Program {
                     loginMenu();
                     break;
                 case 3:
-                    systemManager.logout();
-                    break;
-                case 4:
                     exitProgram();
                     run = false;
                     break;
@@ -48,25 +48,21 @@ public class Program {
                     System.out.println("Wrong menu number.");
             }
         }
-
-        keyboard.close();
     }
 
     private void printMainMenu() {
         System.out.println("\n===== Course Register Program =====");
         System.out.println("1. Create Account");
         System.out.println("2. Login");
-        System.out.println("3. Logout");
-        System.out.println("4. Exit");
+        System.out.println("3. Exit");
         System.out.print("Select menu: ");
     }
 
-    private void createAccountMenu() {
+    public void createAccountMenu() {
         System.out.println("\n===== Create Account =====");
         System.out.println("1. Student");
         System.out.println("2. Professor");
         System.out.print("Select user type: ");
-
         int type = keyboard.nextInt();
         keyboard.nextLine();
 
@@ -98,7 +94,12 @@ public class Program {
         }
     }
 
-    private void loginMenu() {
+    public void loginMenu() {
+        if (systemManager.getCurrentUser() != null) {
+            System.out.println("A user is already logged in.");
+            return;
+        }
+
         System.out.println("\n===== Login =====");
 
         System.out.print("Id: ");
@@ -113,123 +114,16 @@ public class Program {
             return;
         }
 
+        UserMenu userMenu = new UserMenu(keyboard, systemManager, professorManager, studentManager);
+
         if (user instanceof Professor) {
-            professorMenu();
+            userMenu.professorMenu();
         } else if (user instanceof Student) {
-            studentMenu();
+            userMenu.studentMenu();
         }
     }
 
-    private void professorMenu() {
-        boolean run = true;
-
-        while (run) {
-            System.out.println("\n===== Professor Menu =====");
-            System.out.println("1. Add Course");
-            System.out.println("2. Show My Courses");
-            System.out.println("3. Enter Grade");
-            System.out.println("4. Logout");
-            System.out.print("Select menu: ");
-
-            int option = keyboard.nextInt();
-            keyboard.nextLine();
-
-            switch (option) {
-                case 1:
-                    System.out.print("Course ID: ");
-                    String courseId = keyboard.nextLine();
-
-                    System.out.print("Course Name: ");
-                    String courseName = keyboard.nextLine();
-
-                    System.out.print("Credit: ");
-                    int credit = keyboard.nextInt();
-                    keyboard.nextLine();
-
-                    professorManager.addCourse(courseId, courseName, credit);
-                    break;
-
-                case 2:
-                    professorManager.showMyCourses();
-                    break;
-
-                case 3:
-                    System.out.print("Course ID: ");
-                    String gradeCourseId = keyboard.nextLine();
-
-                    System.out.print("Student ID: ");
-                    String studentId = keyboard.nextLine();
-
-                    System.out.print("Grade: ");
-                    String grade = keyboard.nextLine();
-
-                    professorManager.enterGrade(gradeCourseId, studentId, grade);
-                    break;
-
-                case 4:
-                    systemManager.logout();
-                    run = false;
-                    break;
-
-                default:
-                    System.out.println("Wrong menu number.");
-            }
-        }
-    }
-
-    private void studentMenu() {
-        boolean run = true;
-
-        while (run) {
-            System.out.println("\n===== Student Menu =====");
-            System.out.println("1. Register Course");
-            System.out.println("2. Drop Course");
-            System.out.println("3. Show My Courses");
-            System.out.println("4. Check Credits");
-            System.out.println("5. Check Grades");
-            System.out.println("6. Logout");
-            System.out.print("Select menu: ");
-
-            int option = keyboard.nextInt();
-            keyboard.nextLine();
-
-            switch (option) {
-                case 1:
-                    System.out.print("Course ID: ");
-                    String registerId = keyboard.nextLine();
-                    studentManager.registerCourse(registerId);
-                    break;
-
-                case 2:
-                    System.out.print("Course ID: ");
-                    String dropId = keyboard.nextLine();
-                    studentManager.dropCourse(dropId);
-                    break;
-
-                case 3:
-                    studentManager.showMyCourses();
-                    break;
-
-                case 4:
-                    studentManager.checkCredits();
-                    break;
-
-                case 5:
-                    studentManager.checkGrades();
-                    break;
-
-                case 6:
-                    systemManager.logout();
-                    run = false;
-                    break;
-
-                default:
-                    System.out.println("Wrong menu number.");
-            }
-        }
-    }
-
-    private void exitProgram() {
+    public void exitProgram() {
         systemManager.saveAccounts();
         professorManager.saveCourses();
         System.out.println("Program terminated.");
