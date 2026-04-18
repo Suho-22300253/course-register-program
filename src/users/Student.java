@@ -1,5 +1,8 @@
 package users;
 
+/**
+ * implementation class of User class
+ */
 public class Student extends User{
     //variables
     private int studentNumber;
@@ -9,8 +12,6 @@ public class Student extends User{
         super(nameIn,idIn,pwIn);
         studentNumber = num;
     }
-
-
     //method
     public int getStudentNumber() {
         return studentNumber;

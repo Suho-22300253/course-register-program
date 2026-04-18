@@ -6,6 +6,11 @@ import manager.SystemManager;
 
 import java.util.Scanner;
 
+/**
+ * class for User menu
+ * show next contents of login
+ * show just basic options and handle detail in StudentManager and ProfessorManager
+ */
 public class UserMenu {
     private Scanner keyboard;
     private SystemManager systemManager;
@@ -19,11 +24,15 @@ public class UserMenu {
         studentManager = stumanage;
     }
 
+    /**
+     * menu for professor
+     */
     public void professorMenu() {
         boolean run = true;
 
         while (run) {
-            System.out.println("\n===== Professor Menu =====");
+            System.out.println();
+            System.out.println("===== Professor Menu =====");
             System.out.println("1. Add Course");
             System.out.println("2. Show My Courses");
             System.out.println("3. Logout");
@@ -33,7 +42,7 @@ public class UserMenu {
             keyboard.nextLine();
 
             switch (option) {
-                case 1:
+                case 1: // add new course
                     System.out.print("Course Name: ");
                     String courseName = keyboard.nextLine();
 
@@ -44,11 +53,11 @@ public class UserMenu {
                     professorManager.addCourse(courseName, credit);
                     break;
 
-                case 2:
+                case 2: // show all courses created by current professor object
                     professorManager.showMyCourses();
                     break;
 
-                case 3:
+                case 3: // logout
                     systemManager.logout();
                     run = false;
                     break;
@@ -59,11 +68,15 @@ public class UserMenu {
         }
     }
 
+    /**
+     * menu for student
+     */
     public void studentMenu() {
         boolean run = true;
 
         while (run) {
-            System.out.println("\n===== Student Menu =====");
+            System.out.println();
+            System.out.println("===== Student Menu =====");
             System.out.println("1. Register Course");
             System.out.println("2. Drop Course");
             System.out.println("3. Show My Courses");
@@ -75,7 +88,7 @@ public class UserMenu {
             keyboard.nextLine();
 
             switch (option) {
-                case 1:
+                case 1: // register the course
                     System.out.println("\n[All Courses]");
                     professorManager.showAllCourses();
 
@@ -84,7 +97,7 @@ public class UserMenu {
                     studentManager.registerCourse(registerCourseName);
                     break;
 
-                case 2:
+                case 2: // drop coursee
                     System.out.println("\n[My Courses]");
                     studentManager.showMyCourses();
 
@@ -93,15 +106,15 @@ public class UserMenu {
                     studentManager.dropCourse(dropCourseName);
                     break;
 
-                case 3:
+                case 3: // print all course that current user register
                     studentManager.showMyCourses();
                     break;
 
-                case 4:
+                case 4: // get total credits
                     studentManager.checkCredits();
                     break;
 
-                case 5:
+                case 5: //Logout
                     systemManager.logout();
                     run = false;
                     break;

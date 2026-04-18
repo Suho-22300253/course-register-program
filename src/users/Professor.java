@@ -1,5 +1,8 @@
 package users;
 
+/**
+ * implementation class of User class
+ */
 public class Professor extends User {
     private int professorNumber;
 

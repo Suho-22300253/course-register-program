@@ -1,5 +1,9 @@
 package course;
 
+/**
+ * class for course
+ * course name, credit, professor name
+ */
 public class Course {
     private String courseName;
     private int credit;
@@ -22,8 +26,6 @@ public class Course {
     public String getProfessorName() {
         return professorName;
     }
-
-
 
     @Override
     public String toString() {

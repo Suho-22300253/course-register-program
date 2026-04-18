@@ -23,9 +23,13 @@ public class SystemManager implements ISystemManager {
         currentUser = null;
     }
 
+    /**
+     * when program starts
+     * load all account data from account.txt
+     */
     public void loadAccounts() {
         File file = new File(FILE_NAME);
-
+        // if account file doesn't exit
         if (!file.exists()) {
             System.out.println("No account file. Start with empty account list.");
             return;
@@ -43,6 +47,7 @@ public class SystemManager implements ISystemManager {
                     continue;
                 }
 
+                //Divide the data based on the |
                 String[] arr = line.split("\\|");
 
                 if (arr.length != 5) {
@@ -55,6 +60,7 @@ public class SystemManager implements ISystemManager {
                 String id = arr[3];
                 String password = arr[4];
 
+                //based on type create user account and save in ArrayList
                 if (type.equals("STUDENT")) {
                     Student student = new Student(number, name, id, password);
                     students.add(student);
@@ -68,19 +74,22 @@ public class SystemManager implements ISystemManager {
 
         } catch (FileNotFoundException e) {
             System.out.println("Error opening file.");
-        } finally {
-            if (inputStream != null) {
-                inputStream.close();
-            }
+        }
+        if (inputStream != null) {
+            inputStream.close();
         }
     }
 
+    /**
+     * save all data about account no matter it changes or not
+     */
     public void saveAccounts() {
         PrintWriter outputStream = null;
 
         try {
             outputStream = new PrintWriter(FILE_NAME);
 
+            //save as type|(student/professor)number|id|password
             for (int i = 0; i < students.size(); i++) {
                 Student student = students.get(i);
                 outputStream.println("STUDENT|" + student.getStudentNumber() + "|" + student.getName() + "|" +student.getId() + "|" +student.getPassword());
@@ -95,13 +104,19 @@ public class SystemManager implements ISystemManager {
 
         } catch (FileNotFoundException e) {
             System.out.println("Error saving file.");
-        } finally {
-            if (outputStream != null) {
-                outputStream.close();
-            }
+        }
+        if (outputStream != null) {
+            outputStream.close();
         }
     }
 
+    /**
+     * check id and student number if duplicated and then make object of student
+     * @param name
+     * @param id
+     * @param password
+     * @param studentNumber
+     */
     @Override
     public void createStudentAccount(String name, String id, String password, int studentNumber) {
         if (isDuplicatedId(id)) {
@@ -119,6 +134,13 @@ public class SystemManager implements ISystemManager {
         System.out.println("Student account created successfully.");
     }
 
+    /**
+     * check id and professor number if duplicated and then make object of student
+     * @param name
+     * @param id
+     * @param password
+     * @param professorNumber
+     */
     @Override
     public void createProfessorAccount(String name, String id, String password, int professorNumber) {
         if (isDuplicatedId(id)) {
@@ -136,8 +158,15 @@ public class SystemManager implements ISystemManager {
         System.out.println("Professor account created successfully.");
     }
 
+    /**
+     * if id and password is correct then return an object containing the relevant information
+     * @param id
+     * @param password
+     * @return
+     */
     @Override
     public User login(String id, String password) {
+        //Student
         for (int i = 0; i < students.size(); i++) {
             Student student = students.get(i);
 
@@ -147,7 +176,7 @@ public class SystemManager implements ISystemManager {
                 return currentUser;
             }
         }
-
+        // Professor
         for (int i = 0; i < professors.size(); i++) {
             Professor professor = professors.get(i);
 
@@ -162,6 +191,9 @@ public class SystemManager implements ISystemManager {
         return null;
     }
 
+    /**
+     * current object is null
+     */
     @Override
     public void logout() {
         if (currentUser != null) {
@@ -172,6 +204,11 @@ public class SystemManager implements ISystemManager {
         }
     }
 
+    /**
+     * compare input id and saved id
+     * @param id
+     * @return
+     */
     private boolean isDuplicatedId(String id) {
         for (int i = 0; i < students.size(); i++) {
             Student student = students.get(i);
@@ -190,6 +227,11 @@ public class SystemManager implements ISystemManager {
         return false;
     }
 
+    /**
+     * check number is duplicated
+     * @param number
+     * @return
+     */
     private boolean isDuplicatedNumber(int number) {
         for (int i = 0; i < students.size(); i++) {
             Student student = students.get(i);

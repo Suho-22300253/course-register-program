@@ -1,5 +1,9 @@
 package users;
 
+/**
+ * abstract class of Professor and Student class
+ * basically it has name, id and password for login
+ */
 public abstract class User{
     static final String AFFILIATION = "Handong Global University";
     private String name;

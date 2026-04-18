@@ -17,6 +17,7 @@ public class Main {
         professorManager.loadCourses();
         boolean run = true;
         while (run) {
+            //options for first stage
             System.out.println("\n===== Course Register Program =====");
             System.out.println("1. Create Account");
             System.out.println("2. Login");
@@ -26,13 +27,13 @@ public class Main {
             keyboard.nextLine();
 
             switch (option) {
-                case 1:
+                case 1: // create account method
                     program.createAccountMenu();
                     break;
-                case 2:
+                case 2: // login class
                     program.loginMenu();
                     break;
-                case 3:
+                case 3: // terminate program
                     program.exitProgram();
                     run = false;
                     break;

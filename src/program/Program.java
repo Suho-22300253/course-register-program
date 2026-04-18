@@ -9,12 +9,16 @@ import users.User;
 
 import java.util.Scanner;
 
+/**
+ * Classes regarding account creation, login, and program termination
+ */
 public class Program {
     private Scanner keyboard;
     private SystemManager systemManager;
     private ProfessorManager professorManager;
     private StudentManager studentManager;
 
+    //share basic classes(Scanner,SystemManager, ProfessorManager, StudentManager)
     public Program(Scanner sc, SystemManager sysmanage, ProfessorManager pm, StudentManager stumanage) {
         keyboard = sc;
         systemManager = sysmanage;
@@ -22,6 +26,9 @@ public class Program {
         studentManager = stumanage;
     }
 
+    /**
+     * Creates an object based on the type.
+     */
     public void createAccountMenu() {
         System.out.println("\n===== Create Account =====");
         System.out.println("1. Student");
@@ -43,14 +50,14 @@ public class Program {
             System.out.print("Student Number: ");
             int studentNumber = keyboard.nextInt();
             keyboard.nextLine();
-
+            // create student object and save in ArrayList
             systemManager.createStudentAccount(name, id, password, studentNumber);
 
         } else if (type == 2) {
             System.out.print("Professor Number: ");
             int professorNumber = keyboard.nextInt();
             keyboard.nextLine();
-
+            // create professor object and save in ArrayList
             systemManager.createProfessorAccount(name, id, password, professorNumber);
 
         } else {
@@ -58,13 +65,16 @@ public class Program {
         }
     }
 
+    /**
+     * define current user and show different menu depends on type of object
+     */
     public void loginMenu() {
         if (systemManager.getCurrentUser() != null) {
             System.out.println("A user is already logged in.");
             return;
         }
-
-        System.out.println("\n===== Login =====");
+        System.out.println();
+        System.out.println("===== Login =====");
 
         System.out.print("Id: ");
         String id = keyboard.nextLine();
@@ -72,6 +82,7 @@ public class Program {
         System.out.print("Password: ");
         String password = keyboard.nextLine();
 
+        // check type of current user
         User user = systemManager.login(id, password);
 
         if (user == null) {
@@ -87,6 +98,9 @@ public class Program {
         }
     }
 
+    /**
+     * Save progress made so far
+     */
     public void exitProgram() {
         systemManager.saveAccounts();
         professorManager.saveCourses();
