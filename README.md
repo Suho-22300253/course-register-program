@@ -7,7 +7,7 @@ Title: Course Register Program
 Program performance
 1. Create Account
 2. Login
-3. The professor could create or modify the course
+3. The professor could create the course
 4. The student could register for the course
 
 Project Introduction
@@ -48,27 +48,39 @@ This package contains the course class and manages course-related information su
 How does it work
 1. Strat program
 
+
 2. Create Account
 ![Create Account - Student.png](CodeExecutionFolder/Create%20Account%20-%20Student.png)
 
+
 3. Login - Student
 ![Login - Student.png](CodeExecutionFolder/Login%20-%20Student.png)
+
 
 4. Student - Register Course
 ![StudentMenu - register course and show my course.png](CodeExecutionFolder/StudentMenu%20-%20register%20course%20and%20show%20my%20course.png)
 ![StudentMenu - register course and show my course2.png](CodeExecutionFolder/StudentMenu%20-%20register%20course%20and%20show%20my%20course2.png)
 
+
 5. Student - Drop Course
 ![StudentMenu - Drop course.png](CodeExecutionFolder/StudentMenu%20-%20Drop%20course.png)
+
 
 6. Exit and register course.txt
 ![Register course text file.png](CodeExecutionFolder/Register%20course%20text%20file.png)
 
+
 7. Login and Add course - Professor
 ![Professor - Login and Add course.png](CodeExecutionFolder/Professor%20-%20Login%20and%20Add%20course.png)
+
 
 8. Professor - show my course
 ![Professor - show my course.png](CodeExecutionFolder/Professor%20-%20show%20my%20course.png)
 
+
 9. After Professor add new course and change of StudentMenu - register course
 ![Student - after professor add new course.png](CodeExecutionFolder/Student%20-%20after%20professor%20add%20new%20course.png)
+
+
+youtube link
+https://youtu.be/VaU65yn3ndc

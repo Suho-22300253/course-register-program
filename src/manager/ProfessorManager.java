@@ -30,16 +30,6 @@ public class ProfessorManager {
     public void loadCourses() {
         File file = new File(COURSE_FILE);
 
-        /*
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-                System.out.println("courses.txt file created.");
-            } catch (Exception e) {
-                System.out.println("Error creating courses file.");
-            }
-            return;
-        }*/
         //load data from courses.txt
         Scanner inputStream = null;
 
