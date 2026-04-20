@@ -85,20 +85,19 @@ How does it work
 
 
 UML DIAGRAM
-<user pacakge>
+user pacakge
 ![users package UML.png](CodeExecutionFolder/users%20package%20UML.png)
 
-<program pacakge>
+program pacakge
 ![program package UML.png](CodeExecutionFolder/program%20package%20UML.png)
 
-<manager pacakge>
+manager pacakge
 ![manager package UML.png](CodeExecutionFolder/manager%20package%20UML.png)
 
 ![manager package UML2.png](CodeExecutionFolder/manager%20package%20UML2.png)
 
-<course package>
+course package
 ![course package UML.png](CodeExecutionFolder/course%20package%20UML.png)
-
 
 youtube link
 https://youtu.be/VaU65yn3ndc
