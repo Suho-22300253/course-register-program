@@ -1,9 +1,11 @@
+<Member>
+
 Student Number: 22300253
-
 Name: 명수호
-
+<Title>
 Title: Course Register Program
 
+<Project description>
 Program performance
 1. Create Account
 2. Login
@@ -80,6 +82,22 @@ How does it work
 
 9. After Professor add new course and change of StudentMenu - register course
 ![Student - after professor add new course.png](CodeExecutionFolder/Student%20-%20after%20professor%20add%20new%20course.png)
+
+
+UML DIAGRAM
+<user pacakge>
+![users package UML.png](CodeExecutionFolder/users%20package%20UML.png)
+
+<program pacakge>
+![program package UML.png](CodeExecutionFolder/program%20package%20UML.png)
+
+<manager pacakge>
+![manager package UML.png](CodeExecutionFolder/manager%20package%20UML.png)
+
+![manager package UML2.png](CodeExecutionFolder/manager%20package%20UML2.png)
+
+<course package>
+![course package UML.png](CodeExecutionFolder/course%20package%20UML.png)
 
 
 youtube link
